@@ -1,0 +1,332 @@
+.edit-profile-container {
+    max-width: 800px;
+    margin: calc(var(--header-height) + 2rem) auto 2rem;
+    padding: 0 2rem;
+}
+
+.edit-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.edit-profile-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+    background: var(--bg-light);
+}
+
+.back-btn:hover {
+    background: var(--bg-white);
+    transform: translateX(-4px);
+    box-shadow: var(--shadow-sm);
+}
+
+.edit-profile-form {
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+}
+
+.form-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--bg-light);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: all var(--transition-normal);
+    background: var(--bg-white);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    outline: none;
+}
+
+.form-control:hover {
+    border-color: var(--primary-light);
+}
+
+.social-info {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.social-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.social-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+}
+
+.social-item:hover {
+    background: var(--bg-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.social-item i {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    color: var(--text-light);
+    transition: all var(--transition-normal);
+}
+
+.social-item[data-platform="github"]:hover i {
+    color: #333;
+}
+
+.social-item[data-platform="linkedin"]:hover i {
+    color: #0077b5;
+}
+
+.social-item[data-platform="twitter"]:hover i {
+    color: #1da1f2;
+}
+
+.social-item[data-platform="instagram"]:hover i {
+    color: #e4405f;
+}
+
+.social-item[data-platform="website"]:hover i {
+    color: var(--primary-color);
+}
+
+.social-item input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.social-item input:focus {
+    outline: none;
+    background: var(--bg-white);
+    border-radius: var(--radius-sm);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--bg-light);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: none;
+    font-size: 1rem;
+}
+
+.btn i {
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.25);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-dark);
+    color: white;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .edit-profile-container {
+        padding: 0 1rem;
+    }
+
+    .edit-profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .social-links {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .edit-profile-form {
+        padding: 1.5rem;
+    }
+
+    .social-item {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .social-item i {
+        margin: 0 auto;
+    }
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    background: white;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+    border-left: 4px solid var(--success-color);
+}
+
+.notification.error {
+    border-left: 4px solid var(--danger-color);
+}
+
+.notification i {
+    font-size: 1.25rem;
+}
+
+.notification.success i {
+    color: var(--success-color);
+}
+
+.notification.error i {
+    color: var(--danger-color);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Loading State Styles */
+.btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Form Validation Styles */
+.social-link-input.error {
+    border-color: var(--danger-color);
+    background: rgba(220, 53, 69, 0.05);
+}
+
+.social-link-input.error input {
+    color: var(--danger-color);
+}
+
+.social-link-input.error::after {
+    content: 'Please enter a valid URL';
+    color: var(--danger-color);
+    font-size: 0.75rem;
+    position: absolute;
+    bottom: -1.25rem;
+    left: 3.5rem;
+}

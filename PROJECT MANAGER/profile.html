@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Project Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-info">
+                <div class="profile-avatar">
+                    <span id="userInitial">A</span>
+                </div>
+                <div class="profile-details">
+                    <h1 id="userName" class="profile-name">Loading...</h1>
+                    <div class="profile-email">
+                        <i class="fas fa-envelope"></i>
+                        <span id="userEmail">Loading...</span>
+                    </div>
+                    <p id="userBio" class="profile-bio">Loading...</p>
+                    <div class="social-media-links" id="socialMediaLinks">
+                        <!-- Social media links will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+                <button id="editProfileBtn" class="edit-profile-btn">
+                    <i class="fas fa-edit"></i>
+                    Edit Profile
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="stat-number" id="totalProjects">0</div>
+                <div class="stat-label">Total Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-number" id="completedProjects">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number" id="teamsJoined">0</div>
+                <div class="stat-label">Teams Joined</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-number" id="completionRate">0%</div>
+                <div class="stat-label">Completion Rate</div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="section-card full-width">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Performance Overview
+                </h2>
+                <div class="full-width-chart">
+                    <canvas id="completionRateChart"></canvas>
+                </div>
+                <div class="charts-container">
+                    <canvas id="projectCreationChart"></canvas>
+                    <canvas id="teamJoinChart"></canvas>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Load required scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="profile.js"></script>
+</body>
+</html>

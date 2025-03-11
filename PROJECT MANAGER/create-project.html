@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Project - Project Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dialog-styles.css">
+    <style>
+        body {
+            background: var(--bg-dark);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .create-project-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 3rem 4rem;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: headerSlideDown 0.6s ease-out;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            opacity: 0.2;
+            animation: patternFade 2s ease-in-out;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
+            transform: translateX(100%);
+            animation: shine 3s infinite;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            animation: titleSlideIn 0.8s ease-out;
+        }
+
+        .page-header h1::before {
+            content: '🚀';
+            font-size: 2rem;
+            animation: iconFloat 2s ease-in-out infinite;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0;
+            max-width: 600px;
+            line-height: 1.6;
+            animation: textFadeIn 0.8s ease-out forwards 0.3s;
+            position: relative;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: -1rem auto 2rem;
+            padding: 2.5rem;
+            box-sizing: border-box;
+            background: linear-gradient(to bottom, #1E1E1E, #242424);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .section-card {
+            background: rgba(42, 42, 42, 0.7);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .section-card h2 i {
+            font-size: 1.2rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        .form-control {
+            background: #333333;
+            border: 1px solid #404040;
+            color: #ffffff;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .form-label {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: block;
+            letter-spacing: 0.5px;
+        }
+
+        .selection-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .selection-card {
+            background: #333333;
+            border: 2px solid #404040;
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .selection-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+
+        .selection-card.selected {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .selection-card i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item {
+            background: #2A2A2A;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid #3A3A3A;
+        }
+
+        .member-input-group {
+            display: flex;
+            flex-direction: row !important;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .member-input-group .form-control {
+            flex: 1;
+        }
+
+        .btn-add-member {
+            height: 42px;
+            min-width: 100px;
+            padding: 0 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var (--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-member:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .member-list {
+            display: block;
+            background: #333333;
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+            min-height: 50px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #3a3a3a;
+            padding: 0.75rem 1rem;
+            border-radius: var (--radius-md);
+            margin-bottom: 0.5rem;
+            animation: fadeIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            font-size: 0.95rem;
+            flex-wrap: wrap;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .member-remove {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .member-remove:hover {
+            background: rgba(255, 77, 77, 0.1);
+        }
+
+        .member-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .member-chip {
+            background: var(--primary-light);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .member-chip .member-role {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+        }
+
+        .member-chip button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.2rem;
+            font-size: 1rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .member-chip button:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--bg-light);
+        }
+
+        .btn-create {
+            flex: 1;
+            height: 48px;
+            background: #4A90E2; /* Change to blue */
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+        }
+
+        .btn-create:hover {
+            background: #357ABD; /* Darker blue on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-create:active {
+            transform: translateY(0);
+            background: #2868A9; /* Even darker on click */
+        }
+
+        .btn-create:disabled {
+            background: var(--bg-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .btn-cancel {
+            height: 48px;
+            padding: 0 2rem;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: none;
+            border-radius: var (--radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-dark);
+            color: white;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .member-input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column-reverse;
+            }
+
+            .btn-create, .btn-cancel {
+                width: 100%;
+            }
+
+            .role-cards {
+                flex-wrap: nowrap;
+                margin: 0.5rem 0;
+            }
+
+            .page-header {
+                padding: 2rem 1rem;
+            }
+
+            .member-item {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .member-info {
+                font-size: 0.9rem;
+                gap: 0.5rem;
+            }
+
+            .member-info i {
+                font-size: 1rem;
+            }
+
+            .member-remove {
+                padding: 0.25rem;
+            }
+
+            .member-list {
+                padding: 0.5rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .form-container {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
+
+        .timeline-container {
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            background: var(--bg-darker);
+        }
+
+        .timeline-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-add-timeline {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-remove-timeline {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .timeline-item .form-label {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        h1, h3 {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Make form labels pure white with high specificity */
+        .form-container .form-label,
+        .section-card .form-label,
+        .timeline-item .form-label,
+        .form-group .form-label {
+            color: #ffffff !important;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: block;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Make section headings pure white */
+        .section-card h2,
+        .section-card h3,
+        .timeline-container h3 {
+            color: #ffffff !important;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Style main heading */
+        .form-container > h1 {
+            color: #ffffff !important;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .role-cards {
+            display: flex;
+flex-direction: row;
+            flex-direction: row;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.5rem;
+        }
+
+        .role-card {
+            flex: 0 0 auto;
+            min-width: 100px;
+            width: auto;
+        }
+
+        .member-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .member-input-group .form-control {
+            width: 100%;
+        }
+
+        .btn-add-member {
+            align-self: flex-start;
+        }
+
+        .role-card.selected {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+            background: var(--bg-dark);
+        }
+
+        .container {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .create-project-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .page-header {
+            width: 100%;
+            padding: 2rem;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: -1rem auto 0;
+            padding: 2.5rem;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 1200px) {
+            .form-container {
+                margin: 0;
+                padding: 1.5rem;
+                width: 100%;
+            }
+        }
+
+        .container {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .page-header {
+            width: 100%;
+            padding: 2rem 4rem;
+            margin: 0;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1200px) {
+            .page-header {
+                padding: 2rem;
+            }
+            
+            .form-container {
+                margin: 2rem 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
+
+        @keyframes headerSlideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes titleSlideIn {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes textFadeIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%);
+            }
+            20%, 100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes patternFade {
+            from {
+                opacity: 0;
+                transform: scale(1.1);
+            }
+            to {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .admin-info {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.5s ease;
+            max-width: calc(100% - 4rem);
+        }
+
+        #adminEmail {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .admin-info {
+                position: static;
+                margin: 0 1rem 1rem;
+                width: auto;
+                max-width: none;
+                justify-content: flex-end;
+            }
+
+            #adminEmail {
+                max-width: 120px;
+            }
+
+            .admin-badge {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-info {
+                margin: 0 0.5rem 1rem;
+            }
+
+            #adminEmail {
+                max-width: 100px;
+            }
+        }
+
+        .admin-info i {
+            font-size: 1.2rem;
+            color: #FFD700;
+        }
+
+        .admin-info span {
+            color: white;
+            font-weight: 500;
+        }
+
+        .admin-badge {
+            background: #FFD700;
+            color: #000;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Common button styles */
+        .btn-add-member,
+        .btn-add-timeline,
+        .btn-create {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+        }
+
+        .btn-add-member:hover,
+        .btn-add-timeline:hover,
+        .btn-create:hover {
+            background: #357ABD;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-add-member:active,
+        .btn-add-timeline:active,
+        .btn-create:active {
+            transform: translateY(0);
+            background: #2868A9;
+        }
+
+        /* Specific button sizes */
+        .btn-create {
+            height: 48px;
+            padding: 0 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .btn-add-member {
+            height: 42px;
+            padding: 0 1.5rem;
+        }
+
+        .btn-add-timeline {
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cancel button style */
+        .btn-cancel {
+            height: 48px;
+            padding: 0 2rem;
+            background: #444444;
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cancel:hover {
+            background: #333333;
+            transform: translateY(-2px);
+        }
+
+        /* Override button styles with higher specificity */
+        .form-container .action-buttons .btn-create,
+        .btn-create,
+        button.btn-create {
+            background: #4A90E2 !important;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2) !important;
+        }
+
+        .form-container .action-buttons .btn-create:hover,
+        .btn-create:hover,
+        button.btn-create:hover {
+            background: #357ABD !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74, 144, 226, 0.3) !important;
+        }
+
+        .form-container .action-buttons .btn-create:active,
+        .btn-create:active,
+        button.btn-create:active {
+            background: #2868A9 !important;
+            transform: translateY(0);
+        }
+
+        /* Remove any var(--primary-color) references */
+        .btn-add-member,
+        .btn-add-timeline {
+            background: #4A90E2 !important;
+        }
+
+        /* Enhanced mobile responsiveness */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+
+            .selection-cards {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .member-input-group {
+                flex-direction: column !important;
+                gap: 0.75rem;
+            }
+
+            .btn-add-member {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .action-buttons {
+                flex-direction: column-reverse;
+                gap: 1rem;
+            }
+
+            .btn-create, 
+            .btn-cancel {
+                width: 100%;
+                height: 44px;
+            }
+
+            .admin-info {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-bottom: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .timeline-item {
+                padding: 1rem;
+            }
+
+            .form-control {
+                font-size: 16px; /* Prevent zoom on mobile */
+            }
+
+            .member-list {
+                margin-top: 0.75rem;
+            }
+
+            .member-item {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .member-remove {
+                align-self: flex-end;
+            }
+
+            .selection-card {
+                padding: 0.75rem;
+            }
+
+            .section-card h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1rem;
+                margin: 0.5rem;
+            }
+
+            .admin-badge {
+                font-size: 0.7rem;
+            }
+
+            .section-card {
+                padding: 1rem;
+            }
+
+            .member-item {
+                flex-direction: row;
+                padding: 0.5rem;
+                gap: 0.25rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .member-info {
+                font-size: 0.85rem;
+            }
+            
+            .member-info span {
+                word-break: break-all;
+                max-width: 200px;
+            }
+
+            .member-remove {
+                padding: 0.25rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .member-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 0.5rem;
+            background: #333333;
+            border-radius: var(--radius-md);
+        }
+
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #3a3a3a;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: calc(100% - 40px);
+        }
+
+        .member-info span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .member-remove {
+            padding: 0.25rem;
+            min-width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .member-item {
+                font-size: 0.85rem;
+                padding: 0.5rem;
+            }
+            
+            .member-info {
+                max-width: calc(100% - 35px);
+            }
+        }
+
+        .member-status {
+            font-size: 0.8rem;
+            color: #ffd700;
+            margin-left: 0.5rem;
+        }
+
+        /* Project Type and Priority Cards */
+        .selection-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .type-card, .priority-card {
+            background: #333333;
+            border: 2px solid #404040;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            min-width: 120px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .type-card:hover, .priority-card:hover {
+            transform: translateY(-2px);
+            border-color: #4A90E2;
+        }
+
+        .type-card.selected, .priority-card.selected {
+            background: #4A90E2;
+            border-color: #4A90E2;
+            color: white;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4A90E2;
+        }
+
+        .selected .card-icon {
+            color: white;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .card-description {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* Priority specific colors */
+        .priority-low .card-icon { color: #28a745; }
+        .priority-medium .card-icon { color: #ffc107; }
+        .priority-high .card-icon { color: #dc3545; }
+
+        .priority-low.selected { background: #28a745; border-color: #28a745; }
+        .priority-medium.selected { background: #ffc107; border-color: #ffc107; }
+        .priority-high.selected { background: #dc3545; border-color: #dc3545; }
+
+        .priority-low.selected .card-icon,
+        .priority-medium.selected .card-icon,
+        .priority-high.selected .card-icon { color: white; }
+
+        /* Timeline specific styles */
+        .timeline-item {
+            background: rgba(42, 42, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            opacity: 0;
+            animation: slideUp 0.3s ease forwards;
+        }
+
+        .btn-remove-timeline {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-timeline:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-remove-timeline i {
+            font-size: 0.9rem;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments for timeline */
+        @media (max-width: 768px) {
+            .timeline-item {
+                padding: 1rem;
+            }
+            
+            .timeline-item .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="create-project-container">
+            <div class="page-header">
+                <div class="admin-info">
+                    <i class="fas fa-crown"></i>
+                    <span id="adminEmail"></span>
+                    <span class="admin-badge">ADMIN</span>
+                </div>
+                <h1>Create New Project</h1>
+                <p>Fill in the project details below to get started. Add team members and set up your project structure.</p>
+            </div>
+
+            <div class="form-container">
+                <form id="createProjectForm">
+                    <div class="section-card">
+                        <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="projectName">Project Name*</label>
+                            <input type="text" id="projectName" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="projectDescription">Project Description*</label>
+                            <textarea id="projectDescription" class="form-control" rows="4" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h2><i class="fas fa-cogs"></i> Project Details</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="projectType">Project Type*</label>
+                                <input type="hidden" id="projectType" name="projectType" required>
+                                <div id="projectTypeCards" class="selection-group">
+                                    <div class="type-card" data-type="web">
+                                        <div class="card-icon">
+                                            <i class="fas fa-globe"></i>
+                                        </div>
+                                        <div class="card-title">Web Project</div>
+                                        <div class="card-description">Website or web application development</div>
+                                    </div>
+                                    <div class="type-card" data-type="mobile">
+                                        <div class="card-icon">
+                                            <i class="fas fa-mobile-alt"></i>
+                                        </div>
+                                        <div class="card-title">Mobile App</div>
+                                        <div class="card-description">iOS or Android application development</div>
+                                    </div>
+                                    <div class="type-card" data-type="desktop">
+                                        <div class="card-icon">
+                                            <i class="fas fa-desktop"></i>
+                                        </div>
+                                        <div class="card-title">Desktop App</div>
+                                        <div class="card-description">Windows, Mac, or Linux applications</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="priority">Priority Level*</label>
+                                <input type="hidden" id="priority" name="priority" required>
+                                <div id="priorityCards" class="selection-group">
+                                    <div class="priority-card priority-low" data-priority="low">
+                                        <div class="card-icon">
+                                            <i class="fas fa-angle-down"></i>
+                                        </div>
+                                        <div class="card-title">Low Priority</div>
+                                        <div class="card-description">Can be completed at a relaxed pace</div>
+                                    </div>
+                                    <div class="priority-card priority-medium" data-priority="medium">
+                                        <div class="card-icon">
+                                            <i class="fas fa-equals"></i>
+                                        </div>
+                                        <div class="card-title">Medium Priority</div>
+                                        <div class="card-description">Requires steady progress</div>
+                                    </div>
+                                    <div class="priority-card priority-high" data-priority="high">
+                                        <div class="card-icon">
+                                            <i class="fas fa-angle-up"></i>
+                                        </div>
+                                        <div class="card-title">High Priority</div>
+                                        <div class="card-description">Needs immediate attention</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="startDate">Start Date*</label>
+                                <input type="date" id="startDate" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="dueDate">Due Date*</label>
+                                <input type="date" id="dueDate" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="budget">Budget (Optional)</label>
+                                <input type="number" id="budget" class="form-control" placeholder="Enter project budget">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="technology">Technology Stack</label>
+                                <input type="text" id="technology" class="form-control" placeholder="e.g., React, Node.js, AWS">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h2><i class="fas fa-users"></i> Team Members</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="memberEmail">Add Team Member</label>
+                            <div class="member-input-group">
+                                <input type="email" id="memberEmail" class="form-control" placeholder="Enter email address">
+                                <button type="button" id="addMemberBtn" class="btn-add-member">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <div id="membersList" class="member-list">
+                                <!-- Members will be added here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-container">
+                        <h3>Project Timeline</h3>
+                        <button type="button" class="btn-add-timeline" id="addTimeline">
+                            <i class="fas fa-plus"></i> Add Timeline Item
+                        </button>
+                        
+                        <div id="timelineItems">
+                            <!-- Timeline items will be added here -->
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn-create">
+                            <i class="fas fa-plus"></i> Create Project
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="create-project.js"></script>
+</body>
+</html>

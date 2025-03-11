@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Project Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="edit-profile.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="edit-profile-container">
+        <div class="edit-profile-header">
+            <a href="profile.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Profile
+            </a>
+            <h1>Edit Profile</h1>
+        </div>
+
+        <form id="editProfileForm" class="edit-profile-form">
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="form-group">
+                    <label for="editName">Full Name</label>
+                    <input type="text" id="editName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Bio</label>
+                    <textarea id="editBio" class="form-control" rows="4" placeholder="Tell us about yourself..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editMobile">Mobile Number (Optional)</label>
+                    <input type="tel" id="editMobile" class="form-control" placeholder="+1 (234) 567-8900">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Social Media Links</h2>
+                <p class="social-info">Click on the icons to add your social media profiles</p>
+                
+                <div class="social-links-section">
+                    <h3 class="social-links-title">
+                        <i class="fas fa-share-alt"></i>
+                        Social Media Links
+                    </h3>
+                    <div class="social-links-grid">
+                        <div class="social-link-input github" data-helper="Add your GitHub profile URL">
+                            <div class="social-link-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <input type="url" placeholder="GitHub Profile URL" name="github">
+                        </div>
+                        
+                        <div class="social-link-input linkedin" data-helper="Add your LinkedIn profile URL">
+                            <div class="social-link-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </div>
+                            <input type="url" placeholder="LinkedIn Profile URL" name="linkedin">
+                        </div>
+                        
+                        <div class="social-link-input twitter" data-helper="Add your Twitter profile URL">
+                            <div class="social-link-icon">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <input type="url" placeholder="Twitter Profile URL" name="twitter">
+                        </div>
+                        
+                        <div class="social-link-input instagram" data-helper="Add your Instagram profile URL">
+                            <div class="social-link-icon">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <input type="url" placeholder="Instagram Profile URL" name="instagram">
+                        </div>
+                        
+                        <div class="social-link-input website" data-helper="Add your personal website URL">
+                            <div class="social-link-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <input type="url" placeholder="Personal Website URL" name="website">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Save Changes
+                </button>
+                <a href="profile.html" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="edit-profile.js" type="module"></script>
+</body>
+</html>
